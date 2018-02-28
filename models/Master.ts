@@ -8,7 +8,8 @@ export interface IMasterAttr {
     kabupatenId: number;
     comodityId: number;
     status?: string;
-    quantity?: number;
+    supply?: number;
+    demand?: number;
     date: Date;
     createdDate?: Date;
     createdBy?: number;
@@ -24,7 +25,8 @@ export const Master = DB.define<IMasterEntity, IMasterAttr>('master', {
     id: { type: BIGINT, primaryKey: true, autoIncrement: true },
     kabupatenId: { type: BIGINT, allowNull: false , field: 'kabupaten_id'},
     comodityId: { type: BIGINT, allowNull: false , field: 'comodity_id'},
-    quantity: { type: INTEGER, allowNull: false, defaultValue: 0 },
+    supply: { type: INTEGER, allowNull: false, defaultValue: 0 },
+    demand: { type: INTEGER, allowNull: false, defaultValue: 0 },
     status: { type: STRING, allowNull: false, defaultValue: 'normal' },
     date: { type: DATEONLY, allowNull: false },
     createdBy: { type: BIGINT, allowNull: true, field: 'created_by' },
