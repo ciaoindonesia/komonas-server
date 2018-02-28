@@ -39,6 +39,39 @@ router.get(API_URL + '/' + API_NAME + '/getAll', Authenticator, async (req, res)
     }
 });
 
+router.get(API_URL + '/' + API_NAME + '/getSupplyDemandNational', Authenticator, async (req, res) => {
+    try {
+        let query = JSON.parse(req.query.query);
+
+        let result = await controller.getSupplyDemandNational(query.month, query.year);
+
+        if (!result)
+            return res.status(404).send({ status: 404, message: 'Result Not Found'});
+        
+        res.status(200).send(result);
+    }
+    catch(error) {
+        res.status(500).send(error.message);
+    }
+});
+
+router.get(API_URL + '/' + API_NAME + '/getSupplyDemandByProvince', Authenticator, async (req, res) => {
+    try {
+
+        let query = JSON.parse(req.query.query);
+
+        let result = await controller.getSupplyDemandByProvince(query.provinceId, query.month, query.year);
+
+        if (!result)
+            return res.status(404).send({ status: 404, message: 'Result Not Found'});
+        
+        res.status(200).send(result);
+    }
+    catch(error) {
+        res.status(500).send(error.message);
+    }
+});
+
 router.get(API_URL + '/' + API_NAME + '/getAllAndCount', Authenticator, async (req, res) => {
     try {
         controller.applyQuery(JSON.parse(req.query.query));

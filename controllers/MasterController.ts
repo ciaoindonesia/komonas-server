@@ -3,31 +3,33 @@ import { Master, IMasterEntity, IMasterAttr } from '../models/Master';
 import { FindOptions } from 'sequelize';
 import { Kabupaten } from '../models/Kabupaten';
 import { Comodity } from '../models/Comodity';
+import { DB } from '../common/DB';
 
 export class MasterController extends BaseController<IMasterEntity, IMasterAttr> {
     constructor() {
         super(Master);
     }
 
-    async save(data) {
-        try {
-            let entity = null;
+    async getSupplyDemandNational(month, year=null) {
+        if (!year)
+            year = new Date().getFullYear();
 
-            if(!data['id']) {
-                data['createdDate'] ?  data['createdDate'] = new Date() : null;
-                entity = await this.entity.create(data);
-                
-            } 
-            else {
-                data['modifiedDate'] ?  data['modifiedDate'] = new Date() : null;
-                entity = await this.entity.update(data, { where: { id: data['id'] } });
-            }
+        let query = 'select * from vw_supply_demand_national where month = :month and year = :year';
+        let replacements = { month: month, year: year };
+        let result = await DB.query(query, { replacements });
 
-            return entity;
-        }
-        catch(exception) {
-            throw new Error(exception);
-        }
+        return result[0];
+    }
+    
+    async getSupplyDemandByProvince(provinceId, month, year=null) {
+        if (!year)
+            year = new Date().getFullYear();
+
+        let query = 'select * from vw_supply_demand_province where province_id = :provinceId and month = :month and year = :year';
+        let replacements = { provinceId: provinceId, month: month, year: year };
+        let result = await DB.query(query, { replacements });
+
+        return result[0];
     }
 
     applyQuery(query: any) {
