@@ -32,7 +32,7 @@ export const Master = DB.define<IMasterEntity, IMasterAttr>('master', {
     createdBy: { type: BIGINT, allowNull: true, field: 'created_by' },
     createdDate: { type: DATE, allowNull: true, field: 'created_date' },
     updatedBy: { type: BIGINT, allowNull: true, field: 'updated_by' },
-    updatedDate: { type: DATE, allowNull: true, field: 'updated_Date' }
+    updatedDate: { type: DATE, allowNull: true, field: 'updated_date' }
 }, { timestamps: false, tableName: 'masters', freezeTableName: true });
 
 Master.belongsTo(Kabupaten, {as: 'kabupaten', foreignKey: 'kabupatenId'});

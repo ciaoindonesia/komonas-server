@@ -9,6 +9,27 @@ export class MasterController extends BaseController<IMasterEntity, IMasterAttr>
         super(Master);
     }
 
+    async save(data) {
+        try {
+            let entity = null;
+
+            if(!data['id']) {
+                data['createdDate'] ?  data['createdDate'] = new Date() : null;
+                entity = await this.entity.create(data);
+                
+            } 
+            else {
+                data['modifiedDate'] ?  data['modifiedDate'] = new Date() : null;
+                entity = await this.entity.update(data, { where: { id: data['id'] } });
+            }
+
+            return entity;
+        }
+        catch(exception) {
+            throw new Error(exception);
+        }
+    }
+
     applyQuery(query: any) {
         this.query = { where: {}, include: [{model: Kabupaten, as: 'kabupaten'}, {model: Comodity, as: 'comodity'}], order: [] };
 
@@ -41,5 +62,13 @@ export class MasterController extends BaseController<IMasterEntity, IMasterAttr>
 
          if (query.criteria.comodity)
             this.query.where['comodityId'] = query.criteria.comodity.id;
+
+         if (query.criteria.from && query.criteria.to) {
+                let fromDate = new Date(query.criteria.from);
+                let toDate = new Date(query.criteria.to);
+                let from = new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate(), 0, 0, 0);
+                let to = new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate(), 24, 0, 0);
+                this.query.where['date'] = { $between: [from, to] };
+        }
     }
 }

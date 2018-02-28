@@ -59,7 +59,7 @@ router.post(API_URL + '/' + API_NAME + '/save', Authenticator, async (req, res) 
     try {
         req.body['kabupatenId'] = req.body['kabupaten']['id'];
         req.body['comodityId'] = req.body['comodity']['id'];
-        req.body['date'] = new Date();
+   
         req.body['createdBy'] = req['identity']['id'];
         req.body['updatedBy'] = req['identity']['id'];
 
