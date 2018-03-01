@@ -20,6 +20,17 @@ export class MasterController extends BaseController<IMasterEntity, IMasterAttr>
 
         return result[0];
     }
+	
+	async getSupplyDemandNationalByYear(year=null) {
+        if (!year)
+            year = new Date().getFullYear();
+
+        let query = 'select * from vw_supply_demand_national_year where year = :year';
+        let replacements = { year: year };
+        let result = await DB.query(query, { replacements });
+
+        return result[0];
+    }
     
     async getSupplyDemandByProvince(provinceId, month, year=null) {
         if (!year)
@@ -27,6 +38,17 @@ export class MasterController extends BaseController<IMasterEntity, IMasterAttr>
 
         let query = 'select * from vw_supply_demand_province where province_id = :provinceId and month = :month and year = :year';
         let replacements = { provinceId: provinceId, month: month, year: year };
+        let result = await DB.query(query, { replacements });
+
+        return result[0];
+    }
+	
+	async getSupplyDemandByProvinceByYear(provinceId, year=null) {
+        if (!year)
+            year = new Date().getFullYear();
+
+        let query = 'select * from vw_supply_demand_province_year where province_id = :provinceId and year = :year';
+        let replacements = { provinceId: provinceId, year: year };
         let result = await DB.query(query, { replacements });
 
         return result[0];
