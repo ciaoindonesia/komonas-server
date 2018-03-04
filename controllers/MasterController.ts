@@ -53,6 +53,40 @@ export class MasterController extends BaseController<IMasterEntity, IMasterAttr>
 
         return result[0];
     }
+	
+	async getSupplyDemandNationalByComodityByYear(comodityId) {
+        let query = 'select * from vw_supply_demand_comodity_national_year where comodity_id = :comodityId';
+        let replacements = { comodityId: comodityId};
+        let result = await DB.query(query, { replacements });
+
+        return result[0];
+    }
+	
+	async getSupplyDemandNationalByComodityByMonth(comodityId) {
+		var year = new Date().getFullYear();
+        let query = 'select * from vw_supply_demand_comodity_national_month where comodity_id = :comodityId and year =:year';
+        let replacements = { comodityId: comodityId, year: year};
+        let result = await DB.query(query, { replacements });
+
+        return result[0];
+    }
+	
+	async getSupplyDemandProvinceByComodityByMonth(comodityId, provinceId) {
+		var year = new Date().getFullYear();
+        let query = 'select * from vw_supply_demand_comodity_province_month where comodity_id = :comodityId and year =:year and province_id = :provinceId';
+        let replacements = { comodityId: comodityId, year: year, provinceId: provinceId};
+        let result = await DB.query(query, { replacements });
+
+        return result[0];
+    }
+	
+	async getSupplyDemandProvinceByComodityByYear(comodityId, provinceId) {
+        let query = 'select * from vw_supply_demand_comodity_province_year where comodity_id = :comodityId and province_id = :provinceId';
+        let replacements = { comodityId: comodityId, provinceId: provinceId};
+        let result = await DB.query(query, { replacements });
+
+        return result[0];
+    }
 
     applyQuery(query: any) {
         this.query = { where: {}, include: [{model: Kabupaten, as: 'kabupaten'}, {model: Comodity, as: 'comodity'}], order: [] };
